@@ -280,11 +280,11 @@
 
   /* ══════════════════════════════════════════
      SLIDE 3 — LIGNE MUSICALE
-     La barre glisse de gauche à droite en boucle
+     La barre fait un va-et-vient le long de la vague
   ═════════════════════════════════════════════ */
   gsap.fromTo("#wave-bar",
     { x: -700 },
-    { x: 1000, duration: 3.5, repeat: -1, ease: "none" }
+    { x: 1000, duration: 3.5, repeat: -1, yoyo: true, ease: "power2.inOut" }
   );
 
 </script>
