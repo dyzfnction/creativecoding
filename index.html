@@ -14,18 +14,23 @@
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 
     .swiper { width: 100%; height: 100vh; }
-    .swiper-slide { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .swiper-slide {
+      display: flex; align-items: center;
+      justify-content: center; overflow: hidden;
+    }
+
+    .slide-red  { background: #FF3B2F; }
+    .slide-white{ background: #ffffff; }
+    .slide-black{ background: #000000; }
+
     svg.main { width: 100%; height: 100vh; display: block; }
 
-    .swiper-button-next,
-    .swiper-button-prev {
+    .swiper-button-next, .swiper-button-prev {
       --swiper-navigation-size: 16px;
-      color: rgba(0,0,0,0.3);
-      transition: color .2s;
+      color: rgba(0,0,0,0.3); transition: color .2s;
     }
     .dark-nav .swiper-button-next,
     .dark-nav .swiper-button-prev { color: rgba(255,255,255,0.3); }
-
     .swiper-pagination-bullet { background: rgba(0,0,0,0.3); }
     .swiper-pagination-bullet-active { background: #000; }
     .dark-nav .swiper-pagination-bullet { background: rgba(255,255,255,0.3); }
@@ -37,172 +42,99 @@
 <div class="swiper mySwiper">
   <div class="swiper-wrapper">
 
-
     <!-- ══════════════════════════════════════════
          SLIDE 1 — MÉTRONOME
     ═══════════════════════════════════════════ -->
-    <div class="swiper-slide">
+    <div class="swiper-slide slide-red">
       <svg class="main" viewBox="0 0 1194 834" fill="none"
            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-        <g clip-path="url(#clip_s1)">
 
-          <rect width="834" height="1194"
-                transform="matrix(0 1 -1 0 1194 0)" fill="#FF3B2F"/>
-
-          <!-- Triangle blanc statique -->
-          <path d="M701 423.512L489 468C554.643 305.1 569.558 244.735 574.403 85L701 423.512Z"
-                stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
-
-          <!-- Arc pointillé statique -->
-          <path d="M337 479 A 288 288 0 0 1 880 441"
-                stroke="white" stroke-dasharray="39 39"/>
-
-          <!-- Barre animée — pivot en 615 494 -->
-          <g id="metro-needle">
-            <path d="M615 494C662.074 407.76 704.618 345.759 710.742 294.134C744 290 752 273.5 768 250C755 276.5 747 297 757 315.5C702.535 345.485 663.304 410.85 615 494Z"
-                  fill="black" stroke="black" stroke-width="3" stroke-linecap="round"/>
-          </g>
-
-          <!-- Corps noir statique (par-dessus la barre pour masquer le bas) -->
-          <path d="M821 743.266L705.919 439.938L479.436 484.801C424.321 599.533 370.895 654.64 266 749C414.52 646.157 658.606 632.695 821 743.266Z"
+        <path d="M701 423.512L489 468C554.643 305.1 569.558 244.735 574.403 85L701 423.512Z"
+              stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M337 479 A 288 288 0 0 1 880 441"
+              stroke="white" stroke-dasharray="39 39"/>
+        <g id="metro-needle">
+          <path d="M615 494C662.074 407.76 704.618 345.759 710.742 294.134C744 290 752 273.5 768 250C755 276.5 747 297 757 315.5C702.535 345.485 663.304 410.85 615 494Z"
                 fill="black" stroke="black" stroke-width="3" stroke-linecap="round"/>
-
         </g>
-        <defs>
-          <clipPath id="clip_s1">
-            <rect width="834" height="1194" fill="white"
-                  transform="matrix(0 1 -1 0 1194 0)"/>
-          </clipPath>
-        </defs>
+        <path d="M821 743.266L705.919 439.938L479.436 484.801C424.321 599.533 370.895 654.64 266 749C414.52 646.157 658.606 632.695 821 743.266Z"
+              fill="black" stroke="black" stroke-width="3" stroke-linecap="round"/>
+
       </svg>
     </div>
-
 
     <!-- ══════════════════════════════════════════
          SLIDE 2 — TAMBOUR
-         Pointes extérieures FIXES.
-         Corps intérieurs suivent les zigzags rouges.
     ═══════════════════════════════════════════ -->
-    <div class="swiper-slide">
+    <div class="swiper-slide slide-white">
       <svg class="main" viewBox="0 0 1194 834" fill="none"
            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-        <g clip-path="url(#clip_s2)">
 
-          <rect width="834" height="1194"
-                transform="matrix(0 1 -1 0 1194 0)" fill="white"/>
+        <!-- Étoiles fixes -->
+        <path d="M272 424.56C297.393 436.44 352.19 480 366 513C343.167 458.44 341.513 393.76 360.209 348C349.962 373.08 299.175 417.52 272 424.56Z" fill="black" stroke="black"/>
+        <path d="M370.219 653.286C396.403 643.647 465.773 635.464 499.064 648.906C444.023 626.683 396.444 582.319 376.595 536.849C387.474 561.77 384.061 629.063 370.219 653.286Z" fill="black" stroke="black"/>
+        <path d="M613.193 742.877C624.104 717.196 665.658 661.05 698.253 646.001C644.362 670.882 579.45 675.161 532.725 658.478C558.334 667.622 605.025 716.2 613.193 742.877Z" fill="black" stroke="black"/>
+        <path d="M844.892 627.213C833.656 601.673 821.209 532.94 832.571 498.883C813.786 555.191 772.443 605.416 728.284 628.032C752.487 615.637 819.862 614.892 844.892 627.213Z" fill="black" stroke="black"/>
+        <path d="M908.593 359.199C881.591 352.169 819.96 319.293 800.296 289.255C832.807 338.918 846.554 402.502 836.899 451.167C842.191 424.495 883.402 371.188 908.593 359.199Z" fill="black" stroke="black"/>
+        <path d="M387.317 175.759C394.196 202.8 395.159 272.644 378.347 304.367C406.144 251.919 455.19 209.184 502.469 194.145C476.557 202.388 409.978 192.033 387.317 175.759Z" fill="black" stroke="black"/>
+        <path d="M709.773 120.225C689.502 139.399 628.963 174.243 593.069 175.001C652.414 173.748 713.62 195.784 749.774 229.761C729.959 211.139 706.591 147.942 709.773 120.225Z" fill="black" stroke="black"/>
 
-          <!-- Étoiles noires fixes -->
-          <path d="M272 424.56C297.393 436.44 352.19 480 366 513C343.167 458.44 341.513 393.76 360.209 348C349.962 373.08 299.175 417.52 272 424.56Z" fill="black" stroke="black"/>
-          <path d="M370.219 653.286C396.403 643.647 465.773 635.464 499.064 648.906C444.023 626.683 396.444 582.319 376.595 536.849C387.474 561.77 384.061 629.063 370.219 653.286Z" fill="black" stroke="black"/>
-          <path d="M613.193 742.877C624.104 717.196 665.658 661.05 698.253 646.001C644.362 670.882 579.45 675.161 532.725 658.478C558.334 667.622 605.025 716.2 613.193 742.877Z" fill="black" stroke="black"/>
-          <path d="M844.892 627.213C833.656 601.673 821.209 532.94 832.571 498.883C813.786 555.191 772.443 605.416 728.284 628.032C752.487 615.637 819.862 614.892 844.892 627.213Z" fill="black" stroke="black"/>
-          <path d="M908.593 359.199C881.591 352.169 819.96 319.293 800.296 289.255C832.807 338.918 846.554 402.502 836.899 451.167C842.191 424.495 883.402 371.188 908.593 359.199Z" fill="black" stroke="black"/>
-          <path d="M387.317 175.759C394.196 202.8 395.159 272.644 378.347 304.367C406.144 251.919 455.19 209.184 502.469 194.145C476.557 202.388 409.978 192.033 387.317 175.759Z" fill="black" stroke="black"/>
-          <path d="M709.773 120.225C689.502 139.399 628.963 174.243 593.069 175.001C652.414 173.748 713.62 195.784 749.774 229.761C729.959 211.139 706.591 147.942 709.773 120.225Z" fill="black" stroke="black"/>
+        <!-- Zigzags rouges -->
+        <path d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212" stroke="#FF3B2F" fill="none"/>
+        <path d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212" stroke="#FF3B2F" fill="none"/>
 
-          <!-- Zigzags rouges visibles -->
-          <path d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212"
-                stroke="#FF3B2F" fill="none"/>
-          <path d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212"
-                stroke="#FF3B2F" fill="none"/>
+        <!-- Chemins invisibles pour getPointAtLength -->
+        <path id="redPathRight" d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212" fill="none" stroke="none"/>
+        <path id="redPathLeft"  d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212" fill="none" stroke="none"/>
 
-          <!-- Chemins invisibles pour MotionPath -->
-          <path id="redPathRight"
-                d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212"
-                fill="none" stroke="none"/>
-          <path id="redPathLeft"
-                d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212"
-                fill="none" stroke="none"/>
+        <!-- Pointe extérieure fixe gauche -->
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M293.486 182.039C258.414 149.502 216.955 112.099 168.073 69C215.659 113.184 257.215 150.561 293.486 182.039Z"
+              fill="black"/>
 
-          <!-- Pointe extérieure FIXE gauche -->
-          <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M293.486 182.039C258.414 149.502 216.955 112.099 168.073 69C215.659 113.184 257.215 150.561 293.486 182.039Z"
-                fill="black"/>
+        <!-- Corps gauche animé — reconstruit en JS -->
+        <path id="needle-left" fill="black"/>
 
-          <!-- Corps intérieur gauche animé -->
-          <g id="needle-left">
-            <path d="M563.486 420.267C530.178 386.229 517.941 367.452 521.16 334.935C496.314 337.983 435.277 305.09 293.486 182.039C443.638 321.333 476.738 371.422 474.188 397.407C507.095 381.054 527.117 392.177 563.486 420.267Z"
-                  fill="black"/>
-          </g>
+        <!-- Pointe extérieure fixe droite -->
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M889.729 287.623C926.619 257.162 970.164 222.211 1021.45 182C971.395 223.368 927.755 258.288 889.729 287.623Z"
+              fill="black"/>
 
-          <!-- Pointe extérieure FIXE droite -->
-          <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M889.729 287.623C926.619 257.162 970.164 222.211 1021.45 182C971.395 223.368 927.755 258.288 889.729 287.623Z"
-                fill="black"/>
+        <!-- Corps droit animé — reconstruit en JS -->
+        <path id="needle-right" fill="black"/>
 
-          <!-- Corps intérieur droit animé -->
-          <g id="needle-right">
-            <path d="M606.448 509.893C641.662 477.832 654.961 459.791 653.622 427.143C678.251 431.618 741.082 402.297 889.729 287.623C731.799 418.032 695.867 466.13 696.915 492.218C665.005 473.997 644.375 483.947 606.448 509.893Z"
-                  fill="black"/>
-          </g>
-
-        </g>
-        <defs>
-          <clipPath id="clip_s2">
-            <rect width="834" height="1194" fill="white"
-                  transform="matrix(0 1 -1 0 1194 0)"/>
-          </clipPath>
-        </defs>
       </svg>
     </div>
-
 
     <!-- ══════════════════════════════════════════
          SLIDE 3 — LIGNE MUSICALE
-         Seule la grande barre blanche glisse.
     ═══════════════════════════════════════════ -->
-    <div class="swiper-slide">
+    <div class="swiper-slide slide-black">
       <svg class="main" viewBox="0 0 1194 834" fill="none"
            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-        <g clip-path="url(#clip_s3)">
 
-          <rect width="834" height="1194"
-                transform="matrix(0 1 -1 0 1194 0)" fill="black"/>
+        <path d="M567.619 442.27C595.333 601.35 606.161 742.827 673.902 734.663C628.254 719.924 588.068 556.881 568.807 449.006C568.402 446.736 568.006 444.49 567.619 442.27Z" fill="white"/>
+        <path d="M195 443.828C380.838 434.711 350.964 122.864 431.149 98.6611C325.181 114.679 337.713 430.644 195 443.828Z" fill="white"/>
+        <path d="M810.68 503.89C837.251 462.101 873.89 396.999 922 442.27C871.689 432.499 838.946 470.2 810.68 503.89Z" fill="white"/>
+        <path d="M568.807 449.006C588.068 556.881 628.254 719.924 673.902 734.663C682.213 733.662 689.701 730.812 696.542 726.421C625.962 722.557 606.373 618.811 568.807 449.006Z" fill="white"/>
+        <path d="M431.149 98.6611C350.964 122.864 380.838 434.711 195 443.828C337.713 430.644 325.181 114.679 431.149 98.6611ZM431.149 98.6611C472.934 86.049 522.623 256.052 563.389 424.651M673.902 734.663C606.161 742.827 595.333 601.35 567.619 442.27M673.902 734.663C682.213 733.662 689.701 730.812 696.542 726.421M673.902 734.663C628.254 719.924 588.068 556.881 568.807 449.006M567.619 442.27C566.22 436.404 564.81 430.528 563.389 424.651M567.619 442.27C568.006 444.49 568.402 446.736 568.807 449.006M810.68 503.89C837.251 462.101 873.89 396.999 922 442.27C871.689 432.499 838.946 470.2 810.68 503.89ZM810.68 503.89C761.836 580.704 746.364 694.439 696.542 726.421M563.389 424.651C565.239 432.913 567.043 441.032 568.807 449.006M696.542 726.421C625.962 722.557 606.373 618.811 568.807 449.006" stroke="white"/>
 
-          <!-- Onde sinusoïdale statique -->
-          <path d="M567.619 442.27C595.333 601.35 606.161 742.827 673.902 734.663C628.254 719.924 588.068 556.881 568.807 449.006C568.402 446.736 568.006 444.49 567.619 442.27Z" fill="white"/>
-          <path d="M195 443.828C380.838 434.711 350.964 122.864 431.149 98.6611C325.181 114.679 337.713 430.644 195 443.828Z" fill="white"/>
-          <path d="M810.68 503.89C837.251 462.101 873.89 396.999 922 442.27C871.689 432.499 838.946 470.2 810.68 503.89Z" fill="white"/>
-          <path d="M568.807 449.006C588.068 556.881 628.254 719.924 673.902 734.663C682.213 733.662 689.701 730.812 696.542 726.421C625.962 722.557 606.373 618.811 568.807 449.006Z" fill="white"/>
-          <path d="M431.149 98.6611C350.964 122.864 380.838 434.711 195 443.828C337.713 430.644 325.181 114.679 431.149 98.6611Z" fill="white"/>
-          <path d="M431.149 98.6611C472.934 86.049 522.623 256.052 563.389 424.651
-                   M673.902 734.663C606.161 742.827 595.333 601.35 567.619 442.27
-                   M673.902 734.663C682.213 733.662 689.701 730.812 696.542 726.421
-                   M673.902 734.663C628.254 719.924 588.068 556.881 568.807 449.006
-                   M567.619 442.27C566.22 436.404 564.81 430.528 563.389 424.651
-                   M567.619 442.27C568.006 444.49 568.402 446.736 568.807 449.006
-                   M810.68 503.89C761.836 580.704 746.364 694.439 696.542 726.421
-                   M563.389 424.651C565.239 432.913 567.043 441.032 568.807 449.006
-                   M696.542 726.421C625.962 722.557 606.373 618.811 568.807 449.006"
-                stroke="white"/>
+        <line x1="207.001" y1="443.5" x2="922.001" y2="444.607" stroke="white" stroke-dasharray="62 62"/>
+        <path id="horizMotionPath" d="M207,443 L922,443" fill="none" stroke="none"/>
 
-          <!-- Grande barre blanche — seule chose animée -->
-          <g id="wave-bar">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M288.015 443.107C257.43 443.819 221.709 444.167 180 444.108C221.513 443.123 257.272 442.827 288.015 443.107Z"
-                  fill="white"/>
-            <path d="M518.463 443.353C488.134 445.499 474.428 449.224 462.723 465.778C451.723 454.066 408.196 444.198 288.015 443.107C418.956 440.055 455.743 430.309 465.108 417.09C474.643 438.366 489.057 441.448 518.463 443.353Z"
-                  fill="white"/>
-          </g>
-
+        <g id="star4">
+          <path d="M340.5 405C340.5 405 347.561 423.269 362.074 431.204C376.588 439.139 410 443 410 443C410 443 376.588 446.861 362.074 454.796C347.561 462.731 340.5 481 340.5 481C340.5 481 333.439 462.731 318.926 454.796C304.412 446.861 271 443 271 443C271 443 304.412 439.139 318.926 431.204C333.439 423.269 340.5 405 340.5 405Z" fill="white"/>
         </g>
-        <defs>
-          <clipPath id="clip_s3">
-            <rect width="834" height="1194" fill="white"
-                  transform="matrix(0 1 -1 0 1194 0)"/>
-          </clipPath>
-        </defs>
+
       </svg>
     </div>
 
-
-  </div><!-- /swiper-wrapper -->
+  </div>
 
   <div class="swiper-button-next"></div>
   <div class="swiper-button-prev"></div>
   <div class="swiper-pagination"></div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
@@ -213,79 +145,191 @@
   new Swiper(".mySwiper", {
     navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
     pagination:  { el: ".swiper-pagination", clickable: true },
-    effect: "fade",
-    fadeEffect: { crossFade: true },
-    speed: 600,
-    on: {
-      slideChange: function () {
-        swiperEl.classList.toggle("dark-nav", this.activeIndex === 2);
-      }
-    }
+    effect: "fade", fadeEffect: { crossFade: true }, speed: 600,
+    on: { slideChange: function() { swiperEl.classList.toggle("dark-nav", this.activeIndex === 2); } }
   });
 
-
-  /* ══════════════════════════════════════════
+  /* ══════════════════════════════════
      SLIDE 1 — MÉTRONOME
-     Pivot exact : svgOrigin "615 494"
-     Rotation de -107° (gauche) à +35° (droite)
-  ═════════════════════════════════════════════ */
+  ═══════════════════════════════════ */
   gsap.set("#metro-needle", { rotation: -107, svgOrigin: "615 494" });
-  gsap.to("#metro-needle", {
-    rotation: 35,
-    svgOrigin: "615 494",
-    duration: 1.0,
-    repeat: -1,
-    yoyo: true,
-    ease: "power2.inOut"
-  });
+  gsap.to("#metro-needle", { rotation: 35, svgOrigin: "615 494", duration: 1.0, repeat: -1, yoyo: true, ease: "power2.inOut" });
 
-
-  /* ══════════════════════════════════════════
+  /* ══════════════════════════════════
      SLIDE 2 — TAMBOUR
-     Corps gauche suit redPathLeft
-     Corps droit  suit redPathRight
-     Frappe en alternance (delay 0.5s)
-  ═════════════════════════════════════════════ */
-  gsap.to("#needle-left", {
-    duration: 0.5,
-    repeat: -1,
-    yoyo: true,
-    ease: "power3.inOut",
-    motionPath: {
-      path: "#redPathLeft",
-      align: "#redPathLeft",
-      alignOrigin: [0.5, 0.5],
-      autoRotate: false,
-      start: 0,
-      end: 1
-    }
+     La pointe extérieure est fixe.
+     Le corps entier est translaté pour
+     que son origine (pointe intérieure
+     dans le SVG original) suive le
+     chemin rouge.
+
+     Pointe extérieure gauche : (293.486, 182.039)
+     Origine du corps gauche dans le SVG : (293.486, 182.039)
+     → le corps part de ce point, donc on le translate
+       de (ptSurChemin - origineCorps)
+
+     Corps gauche original :
+       M563.486,420.267  C530.178,386.229 517.941,367.452 521.16,334.935
+       C496.314,337.983 435.277,305.09   293.486,182.039
+       C443.638,321.333 476.738,371.422  474.188,397.407
+       C507.095,381.054 527.117,392.177  563.486,420.267 Z
+
+     Le "bout intérieur" (qui bouge) = zone autour de (563, 420)
+     La "pointe fixe" = (293.486, 182.039)
+
+     On anime en déplaçant uniquement le bout intérieur,
+     c'est-à-dire on translate TOUT le corps sauf qu'on
+     ancre la pointe. On utilise donc un <g> avec transform
+     dont l'origine est la pointe fixe, et on rotate/translate
+     le groupe pour que le bout interne suive le chemin rouge.
+
+     Plus simple et fidèle : on garde le path tel quel et on
+     applique une translation (tx, ty) calculée comme
+     (pointSurChemin - pointOrigineInterne).
+
+     Origine interne gauche  : (563.486, 420.267)  → bout qui suit redPathLeft
+     Pointe fixe gauche      : (293.486, 182.039)  → ne bouge pas
+
+     Puisque le groupe entier est translaté, la pointe fixe
+     se déplacera aussi. Pour qu'elle reste fixe, on utilise
+     svgOrigin = pointe fixe et on fait une rotation/scale
+     autour de ce pivot — mais c'est trop complexe.
+
+     Approche correcte : on reconstruit le path en JS.
+     Le path a 4 points-clés. On fixe la pointe extérieure
+     et on translate les 3 autres points (bout interne) du
+     même vecteur que le déplacement du point sur le chemin.
+  ═══════════════════════════════════ */
+
+  const redL = document.getElementById("redPathLeft");
+  const redR = document.getElementById("redPathRight");
+  const needleL = document.getElementById("needle-left");
+  const needleR = document.getElementById("needle-right");
+
+  const totalL = redL.getTotalLength();
+  const totalR = redR.getTotalLength();
+
+  // Position initiale du bout interne de chaque barre
+  // (= premier point du chemin rouge, là où la barre commence)
+  const initL = redL.getPointAtLength(0); // (495.752, 311.339)
+  const initR = redR.getPointAtLength(0); // (682.465, 384.339)
+
+  // Points originaux du corps gauche (depuis le SVG)
+  // La barre gauche va de la pointe (293,182) vers le bout (563,420)
+  // On stocke les 4 sommets du path original
+  const bodyL = [
+    { x: 563.486, y: 420.267 },  // bout interne 1
+    { x: 521.16,  y: 334.935 },  // milieu haut
+    { x: 474.188, y: 397.407 },  // milieu bas
+  ];
+  // Points de contrôle Bézier originaux (on les décale du même vecteur)
+  // Path original gauche :
+  // M563.486 420.267
+  // C530.178 386.229, 517.941 367.452, 521.16 334.935
+  // C496.314 337.983, 435.277 305.09,  293.486 182.039   ← pointe fixe
+  // C443.638 321.333, 476.738 371.422, 474.188 397.407
+  // C507.095 381.054, 527.117 392.177, 563.486 420.267 Z
+
+  // Points de contrôle Bézier originaux droite :
+  // M606.448 509.893
+  // C641.662 477.832, 654.961 459.791, 653.622 427.143
+  // C678.251 431.618, 741.082 402.297, 889.729 287.623   ← pointe fixe
+  // C731.799 418.032, 695.867 466.13,  696.915 492.218
+  // C665.005 473.997, 644.375 483.947, 606.448 509.893 Z
+
+  // Vecteur de déplacement courant
+  const d = { lx: 0, ly: 0, rx: 0, ry: 0 };
+
+  function buildNeedlePath(
+    // pointe fixe
+    fx, fy,
+    // bout interne (M et dernier point)
+    ix, iy,
+    // points de contrôle originaux du path (sans déplacement)
+    cp
+  ) {
+    // On déplace tout sauf la pointe fixe
+    const dx = ix - cp.origInner.x;
+    const dy = iy - cp.origInner.y;
+    return `
+      M${ix},${iy}
+      C${cp.c1ax + dx},${cp.c1ay + dy} ${cp.c1bx + dx},${cp.c1by + dy} ${cp.c2x + dx},${cp.c2y + dy}
+      C${cp.c3ax + dx},${cp.c3ay + dy} ${cp.c3bx + dx},${cp.c3by + dy} ${fx},${fy}
+      C${cp.c4ax},${cp.c4ay} ${cp.c4bx},${cp.c4by} ${cp.c5x + dx},${cp.c5y + dy}
+      C${cp.c6ax + dx},${cp.c6ay + dy} ${cp.c6bx + dx},${cp.c6by + dy} ${ix},${iy} Z
+    `;
+  }
+
+  // Coordonnées Bézier originales extraites du SVG — barre gauche
+  const cpL = {
+    origInner: { x: 563.486, y: 420.267 },
+    // segment 1 : M→C1
+    c1ax: 530.178, c1ay: 386.229,
+    c1bx: 517.941, c1by: 367.452,
+    c2x:  521.16,  c2y:  334.935,
+    // segment 2 : →pointe fixe
+    c3ax: 496.314, c3ay: 337.983,
+    c3bx: 435.277, c3by: 305.09,
+    // segment 3 : pointe fixe→milieu bas (contrôles ne bougent pas côté pointe)
+    c4ax: 443.638, c4ay: 321.333,
+    c4bx: 476.738, c4by: 371.422,
+    c5x:  474.188, c5y:  397.407,
+    // segment 4 : →bout interne
+    c6ax: 507.095, c6ay: 381.054,
+    c6bx: 527.117, c6by: 392.177,
+  };
+
+  // Coordonnées Bézier originales — barre droite
+  const cpR = {
+    origInner: { x: 606.448, y: 509.893 },
+    c1ax: 641.662, c1ay: 477.832,
+    c1bx: 654.961, c1by: 459.791,
+    c2x:  653.622, c2y:  427.143,
+    c3ax: 678.251, c3ay: 431.618,
+    c3bx: 741.082, c3by: 402.297,
+    c4ax: 731.799, c4ay: 418.032,
+    c4bx: 695.867, c4by: 466.13,
+    c5x:  696.915, c5y:  492.218,
+    c6ax: 665.005, c6ay: 473.997,
+    c6bx: 644.375, c6by: 483.947,
+  };
+
+  // Pointes fixes
+  const FIX_L = { x: 293.486, y: 182.039 };
+  const FIX_R = { x: 889.729, y: 287.623 };
+
+  const prog = { left: 0, right: 0 };
+
+  function update() {
+    const ptL = redL.getPointAtLength(prog.left * totalL);
+    const ptR = redR.getPointAtLength(prog.right * totalR);
+
+    needleL.setAttribute("d", buildNeedlePath(FIX_L.x, FIX_L.y, ptL.x, ptL.y, cpL));
+    needleR.setAttribute("d", buildNeedlePath(FIX_R.x, FIX_R.y, ptR.x, ptR.y, cpR));
+  }
+
+  update();
+
+  gsap.to(prog, {
+    left: 1, duration: 0.5, repeat: -1, yoyo: true,
+    ease: "power3.inOut", onUpdate: update
+  });
+  gsap.to(prog, {
+    right: 1, duration: 0.5, repeat: -1, yoyo: true,
+    ease: "power3.inOut", delay: 0.5, onUpdate: update
   });
 
-  gsap.to("#needle-right", {
-    duration: 0.5,
-    repeat: -1,
-    yoyo: true,
-    ease: "power3.inOut",
-    delay: 0.5,
+
+  /* ══════════════════════════════════
+     SLIDE 3 — ÉTOILE
+  ═══════════════════════════════════ */
+  gsap.to("#star4", {
+    duration: 3.5, repeat: -1, yoyo: true, ease: "sine.inOut",
     motionPath: {
-      path: "#redPathRight",
-      align: "#redPathRight",
-      alignOrigin: [0.5, 0.5],
-      autoRotate: false,
-      start: 0,
-      end: 1
+      path: "#horizMotionPath", align: "#horizMotionPath",
+      alignOrigin: [0.5, 0.5], autoRotate: false, start: 0, end: 1
     }
   });
-
-
-  /* ══════════════════════════════════════════
-     SLIDE 3 — LIGNE MUSICALE
-     La barre glisse de gauche à droite en boucle
-  ═════════════════════════════════════════════ */
-  gsap.fromTo("#wave-bar",
-    { x: -700 },
-    { x: 1000, duration: 3.5, repeat: -1, ease: "none" }
-  );
 
 </script>
 </body>
