@@ -79,9 +79,33 @@
         <path d="M387.317 175.759C394.196 202.8 395.159 272.644 378.347 304.367C406.144 251.919 455.19 209.184 502.469 194.145C476.557 202.388 409.978 192.033 387.317 175.759Z" fill="black" stroke="black"/>
         <path d="M709.773 120.225C689.502 139.399 628.963 174.243 593.069 175.001C652.414 173.748 713.62 195.784 749.774 229.761C729.959 211.139 706.591 147.942 709.773 120.225Z" fill="black" stroke="black"/>
 
+        <!-- Tambour (vu d'en haut) -->
+        <g id="drum" transform="translate(597, 417)">
+          <!-- Ombre portée -->
+          <ellipse cx="0" cy="8" rx="145" ry="145" fill="black" opacity="0.1"/>
+          
+          <!-- Corps du tambour -->
+          <circle id="drum-outer" cx="0" cy="0" r="140" fill="#1a1a1a" stroke="black" stroke-width="4"/>
+          
+          <!-- Cercles concentriques décoratifs -->
+          <circle id="drum-ring1" cx="0" cy="0" r="120" fill="none" stroke="#333" stroke-width="2"/>
+          <circle id="drum-ring2" cx="0" cy="0" r="100" fill="none" stroke="#444" stroke-width="1.5"/>
+          <circle id="drum-ring3" cx="0" cy="0" r="80" fill="none" stroke="#555" stroke-width="1"/>
+          
+          <!-- Surface centrale -->
+          <circle id="drum-center" cx="0" cy="0" r="60" fill="#2a2a2a" stroke="#666" stroke-width="2"/>
+          
+          <!-- Détails décoratifs -->
+          <circle cx="0" cy="0" r="40" fill="none" stroke="#FF3B2F" stroke-width="1.5" opacity="0.6"/>
+          <circle cx="0" cy="0" r="25" fill="none" stroke="#FF3B2F" stroke-width="1" opacity="0.4"/>
+          
+          <!-- Point central -->
+          <circle cx="0" cy="0" r="8" fill="#FF3B2F"/>
+        </g>
+
         <!-- Zigzags rouges -->
-        <path d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212" stroke="#FF3B2F" fill="none"/>
-        <path d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212" stroke="#FF3B2F" fill="none"/>
+        <path d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212" stroke="#FF3B2F" fill="none" stroke-width="2"/>
+        <path d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212" stroke="#FF3B2F" fill="none" stroke-width="2"/>
 
         <!-- Chemins invisibles pour getPointAtLength -->
         <path id="redPathRight" d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212" fill="none" stroke="none"/>
@@ -310,6 +334,7 @@
 
   update();
 
+  // Animation des sticks
   gsap.to(prog, {
     left: 1, duration: 0.5, repeat: -1, yoyo: true,
     ease: "power3.inOut", onUpdate: update
@@ -318,6 +343,39 @@
     right: 1, duration: 0.5, repeat: -1, yoyo: true,
     ease: "power3.inOut", delay: 0.5, onUpdate: update
   });
+
+  // Animation de pulse du tambour (synchronisé avec les sticks)
+  const drumTimeline = gsap.timeline({ repeat: -1 });
+  
+  // Pulse gauche (frappe du stick gauche à 0.5s)
+  drumTimeline.to("#drum", {
+    scale: 1.08,
+    duration: 0.1,
+    ease: "power2.out",
+    svgOrigin: "597 417"
+  }, 0.5);
+  drumTimeline.to("#drum", {
+    scale: 1.0,
+    duration: 0.15,
+    ease: "elastic.out(1.5, 0.5)",
+    svgOrigin: "597 417"
+  }, 0.6);
+  
+  // Pulse droit (frappe du stick droit à 1.0s)
+  drumTimeline.to("#drum", {
+    scale: 1.08,
+    duration: 0.1,
+    ease: "power2.out",
+    svgOrigin: "597 417"
+  }, 1.0);
+  drumTimeline.to("#drum", {
+    scale: 1.0,
+    duration: 0.15,
+    ease: "elastic.out(1.5, 0.5)",
+    svgOrigin: "597 417"
+  }, 1.1);
+  
+  drumTimeline.duration(1.0);
 
 
   /* ══════════════════════════════════
