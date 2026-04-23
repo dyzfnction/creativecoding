@@ -1,1 +1,3 @@
-Weshhhhhhh
+Projet de suivi de tracé SVG animé avec GSAP et son plugin MotionPathPlugin. Le slider cubique est construit avec Swiper.js en utilisant l'effet cube, chaque slide étant une face qui pivote à la navigation.
+
+Les trois slides explorent l'univers musical : un métronome dont l'aiguille oscille de gauche à droite, un tambour en rotation avec ses baguettes qui frappent en alternance et une sound wave avec une étoile qui glisse le long du tracé horizontal.

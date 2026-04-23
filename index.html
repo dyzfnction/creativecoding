@@ -7,322 +7,383 @@
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/MotionPathPlugin.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
-
-    .swiper { width: 100%; height: 100vh; }
-    .swiper-slide {
-      display: flex; align-items: center;
-      justify-content: center; overflow: hidden;
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #121214;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .slide-red  { background: #FF3B2F; }
-    .slide-white{ background: #ffffff; }
-    .slide-black{ background: #000000; }
-
-    svg.main { width: 100%; height: 100vh; display: block; }
-
-    .swiper-button-next, .swiper-button-prev {
-      --swiper-navigation-size: 16px;
-      color: rgba(0,0,0,0.3); transition: color .2s;
+    /* ── CUBE SCENE ── */
+    .scene {
+      /* Cube dimensions — adapte au viewport avec un max */
+      --cw: min(600px, 80vmin);
+      --ch: min(600px, 80vmin);
+      width: var(--cw);
+      height: var(--ch);
+      flex-shrink: 0;
+      perspective: 1600px;
+      perspective-origin: 50% 50%;
+      /* Ombre portée du cube (appliquée sur le conteneur) */
+      filter: drop-shadow(0 32px 64px rgba(0,0,0,0.72))
+              drop-shadow(0  8px 24px rgba(0,0,0,0.52));
     }
-    .dark-nav .swiper-button-next,
-    .dark-nav .swiper-button-prev { color: rgba(255,255,255,0.3); }
-    .swiper-pagination-bullet { background: rgba(0,0,0,0.3); }
-    .swiper-pagination-bullet-active { background: #000; }
-    .dark-nav .swiper-pagination-bullet { background: rgba(255,255,255,0.3); }
-    .dark-nav .swiper-pagination-bullet-active { background: #fff; }
+
+    #cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .face-0 { background: #FF3B2F; }
+    .face-1 { background: #ffffff; }
+    .face-2 { background: #000000; }
+
+    svg.main { width: 100%; height: 100%; display: block; }
+
+    /* Slide 3 — inner wrapper occupe toute la face */
+    #slide3-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    #svg-slide3 {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #wave-canvas { position: absolute; pointer-events: none; }
+
+    /* ── NAV ARROWS ── */
+    .nav-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 200;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+      transition: opacity .2s, background .2s;
+    }
+    .nav-btn:hover { opacity: 1; background: rgba(255,255,255,0.12); }
+    .nav-btn svg { width: 16px; height: 16px; }
+    #btn-prev { left: calc(50% - var(--cw, 820px)/2 - 56px); }
+    #btn-next { right: calc(50% - var(--cw, 820px)/2 - 56px); }
+
+    .nav-btn .arrow { stroke: #fff; }
+
+    /* ── PAGINATION ── */
+    .pagination {
+      position: fixed;
+      bottom: calc(50% - var(--ch, 540px)/2 - 32px);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 200;
+    }
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .dot.active { background: rgba(255,255,255,0.85); transform: scale(1.3); }
   </style>
 </head>
 <body>
 
-<div class="swiper mySwiper">
-  <div class="swiper-wrapper">
+<div class="scene">
+  <div id="cube">
 
-    <!-- ══════════════════════════════════════════
-         SLIDE 1 — MÉTRONOME
-    ═══════════════════════════════════════════ -->
-    <div class="swiper-slide slide-red">
+    <!-- ══ FACE 0 — MÉTRONOME ══ -->
+    <div class="face face-0" id="face-0">
       <svg class="main" viewBox="0 0 1194 834" fill="none"
-           xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-
+           xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
         <path d="M701 423.512L489 468C554.643 305.1 569.558 244.735 574.403 85L701 423.512Z"
               stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <path d="M337 479 A 288 288 0 0 1 880 441"
-              stroke="white" stroke-dasharray="39 39"/>
+        <path d="M337 479 A 288 288 0 0 1 880 441" stroke="white" stroke-dasharray="39 39"/>
         <g id="metro-needle">
           <path d="M615 494C662.074 407.76 704.618 345.759 710.742 294.134C744 290 752 273.5 768 250C755 276.5 747 297 757 315.5C702.535 345.485 663.304 410.85 615 494Z"
                 fill="black" stroke="black" stroke-width="3" stroke-linecap="round"/>
         </g>
         <path d="M821 743.266L705.919 439.938L479.436 484.801C424.321 599.533 370.895 654.64 266 749C414.52 646.157 658.606 632.695 821 743.266Z"
               fill="black" stroke="black" stroke-width="3" stroke-linecap="round"/>
-
       </svg>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         SLIDE 2 — TAMBOUR
-    ═══════════════════════════════════════════ -->
-    <div class="swiper-slide slide-white">
+
+    <!-- ══ FACE 1 — TAMBOUR ══ -->
+    <div class="face face-1" id="face-1">
       <svg class="main" viewBox="0 0 1194 834" fill="none"
            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-
-        <!-- Étoiles fixes -->
-        <path d="M272 424.56C297.393 436.44 352.19 480 366 513C343.167 458.44 341.513 393.76 360.209 348C349.962 373.08 299.175 417.52 272 424.56Z" fill="black" stroke="black"/>
-        <path d="M370.219 653.286C396.403 643.647 465.773 635.464 499.064 648.906C444.023 626.683 396.444 582.319 376.595 536.849C387.474 561.77 384.061 629.063 370.219 653.286Z" fill="black" stroke="black"/>
-        <path d="M613.193 742.877C624.104 717.196 665.658 661.05 698.253 646.001C644.362 670.882 579.45 675.161 532.725 658.478C558.334 667.622 605.025 716.2 613.193 742.877Z" fill="black" stroke="black"/>
-        <path d="M844.892 627.213C833.656 601.673 821.209 532.94 832.571 498.883C813.786 555.191 772.443 605.416 728.284 628.032C752.487 615.637 819.862 614.892 844.892 627.213Z" fill="black" stroke="black"/>
-        <path d="M908.593 359.199C881.591 352.169 819.96 319.293 800.296 289.255C832.807 338.918 846.554 402.502 836.899 451.167C842.191 424.495 883.402 371.188 908.593 359.199Z" fill="black" stroke="black"/>
-        <path d="M387.317 175.759C394.196 202.8 395.159 272.644 378.347 304.367C406.144 251.919 455.19 209.184 502.469 194.145C476.557 202.388 409.978 192.033 387.317 175.759Z" fill="black" stroke="black"/>
-        <path d="M709.773 120.225C689.502 139.399 628.963 174.243 593.069 175.001C652.414 173.748 713.62 195.784 749.774 229.761C729.959 211.139 706.591 147.942 709.773 120.225Z" fill="black" stroke="black"/>
-
-        <!-- Zigzags rouges -->
-        <path d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212" stroke="#FF3B2F" fill="none"/>
-        <path d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212" stroke="#FF3B2F" fill="none"/>
-
-        <!-- Chemins invisibles pour getPointAtLength -->
-        <path id="redPathRight" d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212" fill="none" stroke="none"/>
-        <path id="redPathLeft"  d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212" fill="none" stroke="none"/>
-
-        <!-- Pointe extérieure fixe gauche -->
-        <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M293.486 182.039C258.414 149.502 216.955 112.099 168.073 69C215.659 113.184 257.215 150.561 293.486 182.039Z"
-              fill="black"/>
-
-        <!-- Corps gauche animé — reconstruit en JS -->
-        <path id="needle-left" fill="black"/>
-
-        <!-- Pointe extérieure fixe droite -->
-        <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M889.729 287.623C926.619 257.162 970.164 222.211 1021.45 182C971.395 223.368 927.755 258.288 889.729 287.623Z"
-              fill="black"/>
-
-        <!-- Corps droit animé — reconstruit en JS -->
-        <path id="needle-right" fill="black"/>
-
-      </svg>
-    </div>
-
-    <!-- ══════════════════════════════════════════
-         SLIDE 3 — LIGNE MUSICALE
-    ═══════════════════════════════════════════ -->
-    <div class="swiper-slide slide-black">
-      <svg class="main" viewBox="0 0 1194 834" fill="none"
-           xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-
-        <path d="M567.619 442.27C595.333 601.35 606.161 742.827 673.902 734.663C628.254 719.924 588.068 556.881 568.807 449.006C568.402 446.736 568.006 444.49 567.619 442.27Z" fill="white"/>
-        <path d="M195 443.828C380.838 434.711 350.964 122.864 431.149 98.6611C325.181 114.679 337.713 430.644 195 443.828Z" fill="white"/>
-        <path d="M810.68 503.89C837.251 462.101 873.89 396.999 922 442.27C871.689 432.499 838.946 470.2 810.68 503.89Z" fill="white"/>
-        <path d="M568.807 449.006C588.068 556.881 628.254 719.924 673.902 734.663C682.213 733.662 689.701 730.812 696.542 726.421C625.962 722.557 606.373 618.811 568.807 449.006Z" fill="white"/>
-        <path d="M431.149 98.6611C350.964 122.864 380.838 434.711 195 443.828C337.713 430.644 325.181 114.679 431.149 98.6611ZM431.149 98.6611C472.934 86.049 522.623 256.052 563.389 424.651M673.902 734.663C606.161 742.827 595.333 601.35 567.619 442.27M673.902 734.663C682.213 733.662 689.701 730.812 696.542 726.421M673.902 734.663C628.254 719.924 588.068 556.881 568.807 449.006M567.619 442.27C566.22 436.404 564.81 430.528 563.389 424.651M567.619 442.27C568.006 444.49 568.402 446.736 568.807 449.006M810.68 503.89C837.251 462.101 873.89 396.999 922 442.27C871.689 432.499 838.946 470.2 810.68 503.89ZM810.68 503.89C761.836 580.704 746.364 694.439 696.542 726.421M563.389 424.651C565.239 432.913 567.043 441.032 568.807 449.006M696.542 726.421C625.962 722.557 606.373 618.811 568.807 449.006" stroke="white"/>
-
-        <line x1="207.001" y1="443.5" x2="922.001" y2="444.607" stroke="white" stroke-dasharray="62 62"/>
-        <path id="horizMotionPath" d="M207,443 L922,443" fill="none" stroke="none"/>
-
-        <g id="star4">
-          <path d="M340.5 405C340.5 405 347.561 423.269 362.074 431.204C376.588 439.139 410 443 410 443C410 443 376.588 446.861 362.074 454.796C347.561 462.731 340.5 481 340.5 481C340.5 481 333.439 462.731 318.926 454.796C304.412 446.861 271 443 271 443C271 443 304.412 439.139 318.926 431.204C333.439 423.269 340.5 405 340.5 405Z" fill="white"/>
+        <g clip-path="url(#clip0_207_1385)">
+          <rect width="834" height="1194" transform="matrix(0 1 -1 0 1194 0)" fill="white"/>
+          <g id="drum-stars">
+            <path d="M272 424.56C297.393 436.44 352.19 480 366 513C343.167 458.44 341.513 393.76 360.209 348C349.962 373.08 299.175 417.52 272 424.56Z" fill="black" stroke="black"/>
+            <path d="M370.219 653.286C396.403 643.647 465.773 635.464 499.064 648.906C444.023 626.683 396.444 582.319 376.595 536.849C387.474 561.77 384.061 629.063 370.219 653.286Z" fill="black" stroke="black"/>
+            <path d="M613.193 742.877C624.104 717.196 665.658 661.05 698.253 646.001C644.362 670.882 579.45 675.161 532.725 658.478C558.334 667.622 605.025 716.2 613.193 742.877Z" fill="black" stroke="black"/>
+            <path d="M844.892 627.213C833.656 601.673 821.209 532.94 832.571 498.883C813.786 555.191 772.443 605.416 728.284 628.032C752.487 615.637 819.862 614.892 844.892 627.213Z" fill="black" stroke="black"/>
+            <path d="M908.593 359.199C881.591 352.169 819.96 319.293 800.296 289.255C832.807 338.918 846.554 402.502 836.899 451.167C842.191 424.495 883.402 371.188 908.593 359.199Z" fill="black" stroke="black"/>
+            <path d="M387.317 175.759C394.196 202.8 395.159 272.644 378.347 304.367C406.144 251.919 455.19 209.184 502.469 194.145C476.557 202.388 409.978 192.033 387.317 175.759Z" fill="black" stroke="black"/>
+            <path d="M709.773 120.225C689.502 139.399 628.963 174.243 593.069 175.001C652.414 173.748 713.62 195.784 749.774 229.761C729.959 211.139 706.591 147.942 709.773 120.225Z" fill="black" stroke="black"/>
+          </g>
+          <path d="M682.465 384.339C688.194 408.356 698.855 425.721 732.138 464.16C683.897 423.374 658.458 398.84 614.294 353.707C658.483 426.718 687.934 465.19 745.284 531.269C695.975 489.918 671.499 467.695 638.531 431.212" stroke="#FF3B2F"/>
+          <path d="M495.752 311.339C490.023 335.356 479.362 352.721 446.079 391.16C494.319 350.374 519.759 325.84 563.923 280.707C519.733 353.718 490.283 392.19 432.933 458.269C482.242 416.918 506.718 394.695 539.685 358.212" stroke="#FF3B2F"/>
+          <g id="stick-left" filter="url(#filter0_d_207_1385)">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M293.486 182.039C258.414 149.502 216.955 112.099 168.073 68.9997C215.659 113.184 257.215 150.561 293.486 182.039Z" fill="black"/>
+            <path d="M563.486 420.267C530.178 386.229 517.941 367.452 521.16 334.935C496.314 337.983 435.277 305.09 293.486 182.039C443.638 321.333 476.738 371.422 474.188 397.407C507.095 381.054 527.117 392.177 563.486 420.267Z" fill="black"/>
+          </g>
+          <g id="stick-right" filter="url(#filter1_d_207_1385)">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M889.729 287.623C926.619 257.162 970.164 222.211 1021.45 182C971.395 223.368 927.755 258.288 889.729 287.623Z" fill="black"/>
+            <path d="M606.448 509.893C641.662 477.832 654.961 459.791 653.622 427.143C678.251 431.618 741.082 402.297 889.729 287.623C731.799 418.032 695.867 466.13 696.915 492.218C665.005 473.997 644.375 483.947 606.448 509.893Z" fill="black"/>
+          </g>
         </g>
-
+        <defs>
+          <filter id="filter0_d_207_1385" x="164.072" y="69" width="403.414" height="359.266" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="4"/><feGaussianBlur stdDeviation="2"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_207_1385"/>
+            <feBlend in="SourceGraphic" in2="effect1_dropShadow_207_1385" result="shape"/>
+          </filter>
+          <filter id="filter1_d_207_1385" x="602.449" y="182" width="423" height="335.895" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="4"/><feGaussianBlur stdDeviation="2"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_207_1385"/>
+            <feBlend in="SourceGraphic" in2="effect1_dropShadow_207_1385" result="shape"/>
+          </filter>
+          <clipPath id="clip0_207_1385">
+            <rect width="834" height="1194" fill="white" transform="matrix(0 1 -1 0 1194 0)"/>
+          </clipPath>
+        </defs>
       </svg>
+    </div>
+
+
+    <!-- ══ FACE 2 — LIGNE MUSICALE ══ -->
+    <div class="face face-2" id="face-2">
+      <div id="slide3-inner">
+        <canvas id="wave-canvas" width="400" height="380"></canvas>
+        <svg id="svg-slide3" viewBox="0 0 1194 834" fill="none"
+             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <line x1="207.001" y1="443.5" x2="922.001" y2="444.607" stroke="white" stroke-dasharray="62 62"/>
+          <path id="horizMotionPath" d="M207,443 L922,443" fill="none" stroke="none"/>
+          <g id="star4">
+            <path d="M340.5 405C340.5 405 347.561 423.269 362.074 431.204C376.588 439.139 410 443 410 443C410 443 376.588 446.861 362.074 454.796C347.561 462.731 340.5 481 340.5 481C340.5 481 333.439 462.731 318.926 454.796C304.412 446.861 271 443 271 443C271 443 304.412 439.139 318.926 431.204C333.439 423.269 340.5 405 340.5 405Z" fill="white"/>
+          </g>
+        </svg>
+      </div>
     </div>
 
   </div>
-
-  <div class="swiper-button-next"></div>
-  <div class="swiper-button-prev"></div>
-  <div class="swiper-pagination"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<!-- Navigation -->
+<button id="btn-prev" class="nav-btn">
+  <svg viewBox="0 0 18 18" fill="none"><polyline class="arrow" points="11,3 5,9 11,15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<button id="btn-next" class="nav-btn">
+  <svg viewBox="0 0 18 18" fill="none"><polyline class="arrow" points="7,3 13,9 7,15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="pagination">
+  <div class="dot active" data-index="0"></div>
+  <div class="dot" data-index="1"></div>
+  <div class="dot" data-index="2"></div>
+</div>
+
+
 <script>
   gsap.registerPlugin(MotionPathPlugin);
 
-  /* ── SWIPER ── */
-  var swiperEl = document.querySelector(".mySwiper");
-  new Swiper(".mySwiper", {
-    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-    pagination:  { el: ".swiper-pagination", clickable: true },
-    effect: "fade", fadeEffect: { crossFade: true }, speed: 600,
-    on: { slideChange: function() { swiperEl.classList.toggle("dark-nav", this.activeIndex === 2); } }
+  /* ══ CUBE SETUP ══ */
+  var cube       = document.getElementById('cube');
+  var faces      = document.querySelectorAll('.face');
+  var TOTAL      = faces.length;
+  var current    = 0;
+  var isAnimating = false;
+
+  function getHalfW() { return cube.offsetWidth / 2; }
+
+  function setFaceTransforms() {
+    var hz = getHalfW();
+    faces.forEach(function(f, i) {
+      f.style.transform = 'rotateY(' + (i * 90) + 'deg) translateZ(' + hz + 'px)';
+    });
+  }
+
+  function rotateCubeTo(index) {
+    var hz = getHalfW();
+    cube.style.transform = 'translateZ(-' + hz + 'px) rotateY(' + (-index * 90) + 'deg)';
+  }
+
+  setFaceTransforms();
+  rotateCubeTo(0);
+  window.addEventListener('resize', function() {
+    setFaceTransforms();
+    rotateCubeTo(current);
+    positionWaveCanvas();
   });
 
-  /* ══════════════════════════════════
-     SLIDE 1 — MÉTRONOME
-  ═══════════════════════════════════ */
+  function goTo(index) {
+    if (isAnimating || index === current) return;
+    isAnimating = true;
+    current = ((index % TOTAL) + TOTAL) % TOTAL;
+    rotateCubeTo(current);
+    updateUI();
+    setTimeout(function() { isAnimating = false; }, 900);
+  }
+
+  function goNext() { goTo(current + 1); }
+  function goPrev() { goTo(current - 1); }
+
+  document.getElementById('btn-next').addEventListener('click', goNext);
+  document.getElementById('btn-prev').addEventListener('click', goPrev);
+
+  // Keyboard
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') goNext();
+    if (e.key === 'ArrowLeft')  goPrev();
+  });
+
+  // Touch / swipe
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { if (dx < 0) goNext(); else goPrev(); }
+  });
+
+  // Pagination dots
+  document.querySelectorAll('.dot').forEach(function(d) {
+    d.addEventListener('click', function() { goTo(+this.dataset.index); });
+  });
+
+  function updateUI() {
+    document.querySelectorAll('.dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+
+  /* ══ SLIDE 1 — MÉTRONOME ══ */
   gsap.set("#metro-needle", { rotation: -107, svgOrigin: "615 494" });
-  gsap.to("#metro-needle", { rotation: 35, svgOrigin: "615 494", duration: 1.0, repeat: -1, yoyo: true, ease: "power2.inOut" });
-
-  /* ══════════════════════════════════
-     SLIDE 2 — TAMBOUR
-     La pointe extérieure est fixe.
-     Le corps entier est translaté pour
-     que son origine (pointe intérieure
-     dans le SVG original) suive le
-     chemin rouge.
-
-     Pointe extérieure gauche : (293.486, 182.039)
-     Origine du corps gauche dans le SVG : (293.486, 182.039)
-     → le corps part de ce point, donc on le translate
-       de (ptSurChemin - origineCorps)
-
-     Corps gauche original :
-       M563.486,420.267  C530.178,386.229 517.941,367.452 521.16,334.935
-       C496.314,337.983 435.277,305.09   293.486,182.039
-       C443.638,321.333 476.738,371.422  474.188,397.407
-       C507.095,381.054 527.117,392.177  563.486,420.267 Z
-
-     Le "bout intérieur" (qui bouge) = zone autour de (563, 420)
-     La "pointe fixe" = (293.486, 182.039)
-
-     On anime en déplaçant uniquement le bout intérieur,
-     c'est-à-dire on translate TOUT le corps sauf qu'on
-     ancre la pointe. On utilise donc un <g> avec transform
-     dont l'origine est la pointe fixe, et on rotate/translate
-     le groupe pour que le bout interne suive le chemin rouge.
-
-     Plus simple et fidèle : on garde le path tel quel et on
-     applique une translation (tx, ty) calculée comme
-     (pointSurChemin - pointOrigineInterne).
-
-     Origine interne gauche  : (563.486, 420.267)  → bout qui suit redPathLeft
-     Pointe fixe gauche      : (293.486, 182.039)  → ne bouge pas
-
-     Puisque le groupe entier est translaté, la pointe fixe
-     se déplacera aussi. Pour qu'elle reste fixe, on utilise
-     svgOrigin = pointe fixe et on fait une rotation/scale
-     autour de ce pivot — mais c'est trop complexe.
-
-     Approche correcte : on reconstruit le path en JS.
-     Le path a 4 points-clés. On fixe la pointe extérieure
-     et on translate les 3 autres points (bout interne) du
-     même vecteur que le déplacement du point sur le chemin.
-  ═══════════════════════════════════ */
-
-  const redL = document.getElementById("redPathLeft");
-  const redR = document.getElementById("redPathRight");
-  const needleL = document.getElementById("needle-left");
-  const needleR = document.getElementById("needle-right");
-
-  const totalL = redL.getTotalLength();
-  const totalR = redR.getTotalLength();
-
-  // Position initiale du bout interne de chaque barre
-  // (= premier point du chemin rouge, là où la barre commence)
-  const initL = redL.getPointAtLength(0); // (495.752, 311.339)
-  const initR = redR.getPointAtLength(0); // (682.465, 384.339)
-
-  // Points originaux du corps gauche (depuis le SVG)
-  // La barre gauche va de la pointe (293,182) vers le bout (563,420)
-  // On stocke les 4 sommets du path original
-  const bodyL = [
-    { x: 563.486, y: 420.267 },  // bout interne 1
-    { x: 521.16,  y: 334.935 },  // milieu haut
-    { x: 474.188, y: 397.407 },  // milieu bas
-  ];
-  // Points de contrôle Bézier originaux (on les décale du même vecteur)
-  // Path original gauche :
-  // M563.486 420.267
-  // C530.178 386.229, 517.941 367.452, 521.16 334.935
-  // C496.314 337.983, 435.277 305.09,  293.486 182.039   ← pointe fixe
-  // C443.638 321.333, 476.738 371.422, 474.188 397.407
-  // C507.095 381.054, 527.117 392.177, 563.486 420.267 Z
-
-  // Points de contrôle Bézier originaux droite :
-  // M606.448 509.893
-  // C641.662 477.832, 654.961 459.791, 653.622 427.143
-  // C678.251 431.618, 741.082 402.297, 889.729 287.623   ← pointe fixe
-  // C731.799 418.032, 695.867 466.13,  696.915 492.218
-  // C665.005 473.997, 644.375 483.947, 606.448 509.893 Z
-
-  // Vecteur de déplacement courant
-  const d = { lx: 0, ly: 0, rx: 0, ry: 0 };
-
-  function buildNeedlePath(
-    // pointe fixe
-    fx, fy,
-    // bout interne (M et dernier point)
-    ix, iy,
-    // points de contrôle originaux du path (sans déplacement)
-    cp
-  ) {
-    // On déplace tout sauf la pointe fixe
-    const dx = ix - cp.origInner.x;
-    const dy = iy - cp.origInner.y;
-    return `
-      M${ix},${iy}
-      C${cp.c1ax + dx},${cp.c1ay + dy} ${cp.c1bx + dx},${cp.c1by + dy} ${cp.c2x + dx},${cp.c2y + dy}
-      C${cp.c3ax + dx},${cp.c3ay + dy} ${cp.c3bx + dx},${cp.c3by + dy} ${fx},${fy}
-      C${cp.c4ax},${cp.c4ay} ${cp.c4bx},${cp.c4by} ${cp.c5x + dx},${cp.c5y + dy}
-      C${cp.c6ax + dx},${cp.c6ay + dy} ${cp.c6bx + dx},${cp.c6by + dy} ${ix},${iy} Z
-    `;
-  }
-
-  // Coordonnées Bézier originales extraites du SVG — barre gauche
-  const cpL = {
-    origInner: { x: 563.486, y: 420.267 },
-    // segment 1 : M→C1
-    c1ax: 530.178, c1ay: 386.229,
-    c1bx: 517.941, c1by: 367.452,
-    c2x:  521.16,  c2y:  334.935,
-    // segment 2 : →pointe fixe
-    c3ax: 496.314, c3ay: 337.983,
-    c3bx: 435.277, c3by: 305.09,
-    // segment 3 : pointe fixe→milieu bas (contrôles ne bougent pas côté pointe)
-    c4ax: 443.638, c4ay: 321.333,
-    c4bx: 476.738, c4by: 371.422,
-    c5x:  474.188, c5y:  397.407,
-    // segment 4 : →bout interne
-    c6ax: 507.095, c6ay: 381.054,
-    c6bx: 527.117, c6by: 392.177,
-  };
-
-  // Coordonnées Bézier originales — barre droite
-  const cpR = {
-    origInner: { x: 606.448, y: 509.893 },
-    c1ax: 641.662, c1ay: 477.832,
-    c1bx: 654.961, c1by: 459.791,
-    c2x:  653.622, c2y:  427.143,
-    c3ax: 678.251, c3ay: 431.618,
-    c3bx: 741.082, c3by: 402.297,
-    c4ax: 731.799, c4ay: 418.032,
-    c4bx: 695.867, c4by: 466.13,
-    c5x:  696.915, c5y:  492.218,
-    c6ax: 665.005, c6ay: 473.997,
-    c6bx: 644.375, c6by: 483.947,
-  };
-
-  // Pointes fixes
-  const FIX_L = { x: 293.486, y: 182.039 };
-  const FIX_R = { x: 889.729, y: 287.623 };
-
-  const prog = { left: 0, right: 0 };
-
-  function update() {
-    const ptL = redL.getPointAtLength(prog.left * totalL);
-    const ptR = redR.getPointAtLength(prog.right * totalR);
-
-    needleL.setAttribute("d", buildNeedlePath(FIX_L.x, FIX_L.y, ptL.x, ptL.y, cpL));
-    needleR.setAttribute("d", buildNeedlePath(FIX_R.x, FIX_R.y, ptR.x, ptR.y, cpR));
-  }
-
-  update();
-
-  gsap.to(prog, {
-    left: 1, duration: 0.5, repeat: -1, yoyo: true,
-    ease: "power3.inOut", onUpdate: update
-  });
-  gsap.to(prog, {
-    right: 1, duration: 0.5, repeat: -1, yoyo: true,
-    ease: "power3.inOut", delay: 0.5, onUpdate: update
+  gsap.to("#metro-needle", {
+    rotation: 35, svgOrigin: "615 494",
+    duration: 1.0, repeat: -1, yoyo: true, ease: "power2.inOut"
   });
 
 
-  /* ══════════════════════════════════
-     SLIDE 3 — ÉTOILE
-  ═══════════════════════════════════ */
+  /* ══ SLIDE 2 — TAMBOUR ══ */
+  gsap.set("#stick-left",  { svgOrigin: "168 69",   rotation: 0 });
+  gsap.set("#stick-right", { svgOrigin: "1021 182", rotation: 0 });
+  gsap.set("#drum-stars",  { svgOrigin: "590 430",  rotation: 0 });
+
+  gsap.to("#drum-stars", {
+    rotation: 360, svgOrigin: "590 430",
+    duration: 8, repeat: -1, ease: "none"
+  });
+
+  function boostStars() {
+    gsap.to("#drum-stars", {
+      duration: 0.12, timeScale: 4, ease: "power1.out",
+      onComplete: function() {
+        gsap.to("#drum-stars", { timeScale: 1, duration: 0.7, ease: "power2.out" });
+      }
+    });
+  }
+
+  function hitLeft() {
+    gsap.timeline()
+      .to("#stick-left", { rotation: 22,  svgOrigin: "168 69",  duration: 0.22, ease: "sine.in" })
+      .to("#stick-left", { rotation: -5,  svgOrigin: "168 69",  duration: 0.18, ease: "power2.out", onStart: boostStars })
+      .to("#stick-left", { rotation: 0,   svgOrigin: "168 69",  duration: 0.55, ease: "elastic.out(1.4, 0.45)" });
+  }
+
+  function hitRight() {
+    gsap.timeline()
+      .to("#stick-right", { rotation: -22, svgOrigin: "1021 182", duration: 0.22, ease: "sine.in" })
+      .to("#stick-right", { rotation: 5,   svgOrigin: "1021 182", duration: 0.18, ease: "power2.out", onStart: boostStars })
+      .to("#stick-right", { rotation: 0,   svgOrigin: "1021 182", duration: 0.55, ease: "elastic.out(1.4, 0.45)" });
+  }
+
+  var drumT = 0;
+  setInterval(function() {
+    if (drumT % 2 === 0) hitLeft(); else hitRight();
+    drumT++;
+  }, 520);
+
+
+  /* ══ SLIDE 3 — ONDE + ÉTOILE ══ */
+  var waveCanvas = document.getElementById('wave-canvas');
+  var waveCtx    = waveCanvas.getContext('2d');
+
+  function positionWaveCanvas() {
+    var w = cube.offsetWidth;
+    var h = cube.offsetHeight;
+    var scale = Math.min(w / 1194, h / 834);
+    var offX  = (w - 1194 * scale) / 2;
+    var offY  = (h -  834 * scale) / 2;
+    waveCanvas.style.left   = (offX + 207 * scale) + 'px';
+    waveCanvas.style.top    = (offY + (443 - 350) * scale) + 'px';
+    waveCanvas.style.width  = (715 * scale) + 'px';
+    waveCanvas.style.height = (700 * scale) + 'px';
+  }
+
+  positionWaveCanvas();
+
+  var wt = 0;
+  function drawWave() {
+    waveCtx.clearRect(0, 0, 400, 380);
+    var cy = 190;
+    var A  = 380 * 0.46;
+    for (var x = 0; x < 400; x++) {
+      var n0 = x / 400;
+      var n1 = (x + 1) / 400;
+      var y0 = cy - A * Math.sin(n0 * Math.PI * 2 - wt);
+      var y1 = cy - A * Math.sin(n1 * Math.PI * 2 - wt);
+      var torsion = Math.cos(n0 * Math.PI * 2 - wt * 1.5);
+      var spot = Math.pow(Math.max(0, torsion), 6);
+      waveCtx.beginPath();
+      waveCtx.moveTo(x, y0);
+      waveCtx.lineTo(x + 1, y1);
+      waveCtx.strokeStyle = 'white';
+      waveCtx.lineWidth = 1 + spot * 12;
+      waveCtx.stroke();
+    }
+    wt += 0.025;
+    requestAnimationFrame(drawWave);
+  }
+  drawWave();
+
   gsap.to("#star4", {
     duration: 3.5, repeat: -1, yoyo: true, ease: "sine.inOut",
     motionPath: {
